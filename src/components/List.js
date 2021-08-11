@@ -23,18 +23,50 @@ export default class List extends React.Component {
     const bookAuthorVal = this.state.bookAuthor;
     const readVal = this.state.read;
     if (bookNameVal && bookAuthorVal) {
-      this.setState((prevState) => ({
-        books: [
-          ...prevState.books,
-          {
-            bookName: bookNameVal,
-            bookAuthor: bookAuthorVal,
-            read: readVal,
-          },
-        ],
-      }));
+      this.setState(
+        (prevState) => ({
+          books: [
+            ...prevState.books,
+            {
+              bookName: bookNameVal,
+              bookAuthor: bookAuthorVal,
+              read: readVal,
+            },
+          ],
+        }),
+        () => {
+          localStorage.setItem('books', JSON.stringify(this.state.books));
+        }
+      );
     }
   };
+
+  removeBook = (index) => {
+    const booksArr = [...this.state.books];
+    if (booksArr) {
+      this.setState(
+        {
+          books: booksArr.filter((book, bookIndex) => {
+            return bookIndex !== index;
+          }),
+        },
+        () => {
+          localStorage.setItem('books', JSON.stringify(this.state.books));
+        }
+      );
+    }
+  };
+
+  saveLocal = () => {
+    localStorage.setItem('books', JSON.stringify(this.state.books));
+  };
+
+  componentDidMount() {
+    const books = localStorage.getItem('books');
+    if (books) {
+      this.setState({ books: JSON.parse(books) });
+    }
+  }
 
   render() {
     let books = this.state.books;
@@ -89,7 +121,26 @@ export default class List extends React.Component {
                   <td>{item.bookName}</td>
                   <td>{item.bookAuthor}</td>
                   <td>{item.read}</td>
-                  <td id="settings"></td>
+                  <td id="settings">
+                    <button
+                      onClick={() => {
+                        item.read === 'Yes'
+                          ? (item.read = 'No')
+                          : (item.read = 'Yes');
+                        this.saveLocal();
+                        this.forceUpdate();
+                      }}
+                    >
+                      {item.read === 'Yes' ? 'Still reading' : 'Finished'}
+                    </button>
+                    <button
+                      onClick={() => {
+                        this.removeBook(index);
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </td>
                 </tr>
               );
             })}

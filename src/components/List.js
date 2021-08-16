@@ -5,7 +5,11 @@ export default class List extends React.Component {
     super(props);
     this.state = {
       bookName: '',
+      bookSubTitle: '',
       bookAuthor: '',
+      bookCategory: '',
+      bookSeries: '',
+      bookSeriesNo: '',
       read: 'No',
       books: [],
     };
@@ -20,6 +24,7 @@ export default class List extends React.Component {
   submitHandler = (e) => {
     e.preventDefault();
     const bookNameVal = this.state.bookName;
+    const bookSubTitleVal = this.state.bookSubTitle;
     const bookAuthorVal = this.state.bookAuthor;
     const readVal = this.state.read;
     if (bookNameVal && bookAuthorVal) {
@@ -29,6 +34,7 @@ export default class List extends React.Component {
             ...prevState.books,
             {
               bookName: bookNameVal,
+              bookSubTitle: bookSubTitleVal,
               bookAuthor: bookAuthorVal,
               read: readVal,
             },
@@ -84,6 +90,16 @@ export default class List extends React.Component {
               onChange={this.changeHandler}
               required
             />
+            <label for="bookSubTitle">Sub Title</label>
+            <input
+              id="bookSubTitle"
+              name="bookSubTitle"
+              type="text"
+              placeholder="Sub Title"
+              maxLength="150"
+              onChange={this.changeHandler}
+              required
+            />
             <label for="bookAuthor">Author</label>
             <input
               id="bookAuthor"
@@ -94,23 +110,27 @@ export default class List extends React.Component {
               onChange={this.changeHandler}
               required
             />
-            <label for="read">Read</label>
+            <label for="read">Status</label>
             <select
               id="read"
               name="read"
               onChange={this.changeHandler}
               value={this.state.read}
             >
-              <option value="Yes">Yes</option>
+              <option value="Reading">Yes</option>
               <option value="No">No</option>
+              <option value="Next">Next</option>
+              <option value="Buy">Buy</option>
             </select>
             <input id="submit" type="submit" value="Add new book" />
           </form>
         </div>
+        {/* ToDo: Move the following table to a separate component */}
         <div>
           <table>
             <tr>
               <th>Title</th>
+              <th>Sub Title</th>
               <th>Author</th>
               <th>Read</th>
               <th colspan="2">Settings</th>
@@ -119,6 +139,7 @@ export default class List extends React.Component {
               return (
                 <tr key={index}>
                   <td>{item.bookName}</td>
+                  <td>{item.bookSubTitle}</td>
                   <td>{item.bookAuthor}</td>
                   <td>{item.read}</td>
                   <td id="settings">

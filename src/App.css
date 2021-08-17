@@ -1,6 +1,11 @@
 html {
   background-color: antiquewhite;
 }
+
+#root {
+  height: 100vh;
+}
+
 .bookForm {
   display: grid;
   width: 400px;
@@ -12,6 +17,7 @@ html {
   color: white;
   align-content: center;
 }
+
 #bookName,
 #bookAuthor,
 #bookSubTitle,
@@ -24,16 +30,21 @@ html {
   border: solid black 2px;
   border-radius: 8px;
 }
+
 table {
-  width: 800px;
+  width: 80vw;
+  max-width: 1500px;
+  min-width: 800px;
   margin: 0px auto;
   border: solid black 2px;
 }
+
 table,
 th,
 td {
   border-collapse: collapse;
 }
+
 th,
 td {
   border: solid 2px black;
@@ -41,46 +52,64 @@ td {
   background-color: rgb(121, 121, 121);
   color: white;
 }
+
 th {
-  text-align: left;
+  text-align: lecenterft;
   background-color: rgb(165, 162, 162);
   color: white;
 }
+
 #settings {
   width: 200px;
 }
+
 #settings > * {
   margin: 4px;
   border: solid black 2px;
 }
-.Header {
+
+.header {
   display: flex;
   align-items: center;
   text-align: center;
   background-color: rgb(54, 47, 46);
   color: white;
+  margin-top: 0;
+  height: 7rem;
 }
-.Header > p {
+
+.header > p {
   margin-left: 0px;
   margin-right: auto;
 }
-.Footer {
+
+.main {
+  height: calc(100vh - 14rem);
+  overflow: auto;
+}
+
+.footer {
   text-align: center;
   padding: 2px 0px 2px 0px;
   margin-top: 20px;
+  margin-bottom: 0;
   background-color: rgb(54, 47, 46);
   color: white;
+  height: 7rem;
 }
+
 #logoHeader {
   margin-right: 10px;
   margin-left: auto;
   width: 40px;
   height: 40px;
 }
+
 #footerLogo {
   width: 20px;
   height: 20px;
 }
+
 @media only screen and (max-width: 600px) {
   .bookForm,
   table {

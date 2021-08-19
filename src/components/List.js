@@ -1,5 +1,6 @@
 import React from 'react';
 import Booklist from './Booklist';
+import { v4 } from 'uuid';
 
 export default class List extends React.Component {
   constructor(props) {
@@ -22,12 +23,13 @@ export default class List extends React.Component {
     this.setState({ [nam]: val });
   };
 
-  submitHandler = (e) => {
+  addBook = (e) => {
     e.preventDefault();
     const bookNameVal = this.state.bookName;
     const bookSubTitleVal = this.state.bookSubTitle;
     const bookAuthorVal = this.state.bookAuthor;
     const readVal = this.state.read;
+    const bookID = v4();
     if (bookNameVal && bookAuthorVal) {
       this.setState(
         (prevState) => ({
@@ -38,9 +40,26 @@ export default class List extends React.Component {
               bookSubTitle: bookSubTitleVal,
               bookAuthor: bookAuthorVal,
               read: readVal,
+              uuid: bookID,
             },
           ],
         }),
+        () => {
+          localStorage.setItem('books', JSON.stringify(this.state.books));
+        }
+      );
+    }
+  };
+
+  removeBook = (index) => {
+    const booksArr = [...this.state.books];
+    if (booksArr) {
+      this.setState(
+        {
+          books: booksArr.filter((book, bookIndex) => {
+            return bookIndex !== index;
+          }),
+        },
         () => {
           localStorage.setItem('books', JSON.stringify(this.state.books));
         }
@@ -56,13 +75,12 @@ export default class List extends React.Component {
   }
 
   render() {
-    let books = this.state.books;
     return (
       <>
         <div className="main">
           <div>
-            <form className="bookForm" onSubmit={this.submitHandler}>
-              <label for="bookName">Title</label>
+            <form className="bookForm" onSubmit={this.addBook}>
+              <label htmlFor="bookName">Title</label>
               <input
                 id="bookName"
                 name="bookName"
@@ -72,7 +90,7 @@ export default class List extends React.Component {
                 onChange={this.changeHandler}
                 required
               />
-              <label for="bookSubTitle">Sub Title</label>
+              <label htmlFor="bookSubTitle">Sub Title</label>
               <input
                 id="bookSubTitle"
                 name="bookSubTitle"
@@ -80,9 +98,8 @@ export default class List extends React.Component {
                 placeholder="Sub Title"
                 maxLength="150"
                 onChange={this.changeHandler}
-                required
               />
-              <label for="bookAuthor">Author</label>
+              <label htmlFor="bookAuthor">Author</label>
               <input
                 id="bookAuthor"
                 name="bookAuthor"
@@ -92,7 +109,7 @@ export default class List extends React.Component {
                 onChange={this.changeHandler}
                 required
               />
-              <label for="read">Status</label>
+              <label htmlFor="read">Status</label>
               <select
                 id="read"
                 name="read"
@@ -107,7 +124,7 @@ export default class List extends React.Component {
               <input id="submit" type="submit" value="Add new book" />
             </form>
           </div>
-          <Booklist state={this.state} />
+          <Booklist books={this.state.books} removeBook={this.removeBook} />
         </div>
       </>
     );

@@ -1,28 +1,12 @@
 import React from 'react';
 
 export default class Booklist extends React.Component {
-  removeBook = (index) => {
-    const booksArr = [...this.props.state.books];
-    if (booksArr) {
-      this.setState(
-        {
-          books: booksArr.filter((book, bookIndex) => {
-            return bookIndex !== index;
-          }),
-        },
-        () => {
-          localStorage.setItem('books', JSON.stringify(this.props.state.books));
-        }
-      );
-    }
-  };
-
   saveLocal = () => {
-    localStorage.setItem('books', JSON.stringify(this.props.state.books));
+    localStorage.setItem('books', JSON.stringify(this.props.books));
   };
 
   render() {
-    let books = this.props.state.books;
+    let books = this.props.books;
     return (
       <div>
         <table>
@@ -32,7 +16,7 @@ export default class Booklist extends React.Component {
               <th>Sub Title</th>
               <th>Author</th>
               <th>Read</th>
-              <th colspan="2">Settings</th>
+              <th colSpan="2">Settings</th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +43,7 @@ export default class Booklist extends React.Component {
                   <td>
                     <button
                       onClick={() => {
-                        this.removeBook(index);
+                        this.props.removeBook(index);
                       }}
                     >
                       Remove
